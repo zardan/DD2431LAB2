@@ -1,4 +1,4 @@
-
+import numpy, random, math
 # generate data of two classes
 
 def generateData():
