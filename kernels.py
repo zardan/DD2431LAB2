@@ -2,5 +2,7 @@ import numpy, pylab, random, math
 
 # a linear kernel functionn (2D)
 def lin_ker(x,y):
-    product = x[0]*y[0] + x[1]*y[1]
-    return product
+    product = 0
+    for i in range(len(x)-1):
+        product = product + x[i]*y[i]
+    return product+1
