@@ -1,5 +1,6 @@
 import numpy, pylab, random, math
 
-# a linear kernel function
+# a linear kernel functionn (2D)
 def lin_ker(x,y):
-    returm [x.dot(y) + 1]
+    product = x[0]*y[0] + x[1]*y[1]
+    return product
