@@ -1,7 +1,7 @@
 
 # generate data of two classes
 
-def generateDate():
+def generateData():
     classA = [(random.normalvariate(-1.5, 1),
         random.normalvariate(0.5,1),
         1)
