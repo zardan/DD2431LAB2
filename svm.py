@@ -21,4 +21,13 @@ classB = [(random.normalvariate(0.0, 0.5),
 data = classA + classB
 random.shuffle(data)
 
-# HEEJ
+# Plot the data
+
+pylab.hold(True)
+pylab.plot([p[0] for p in classA],
+        [p[1] for p in classA],
+        'bo')
+pylab.plot([p[0] for p in classB],
+        [p[1] for p in classB],
+        'ro')
+pylab.show()
