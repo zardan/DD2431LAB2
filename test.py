@@ -1,4 +1,6 @@
 import numpy, pylab, random, math
 
 from cvxopt.solvers import qp
-from vcxopt.base import matrix
+from cvxopt.base import matrix
+
+# HEEJ
