@@ -1,33 +1,13 @@
-import numpy, pylab, random, math
+import numpy, random, math
 
 from cvxopt.solvers import qp
 from cvxopt.base import matrix
 
+from data import generateData
+from plot import plotFun
 
-classA = [(random.normalvariate(-1.5, 1),
-    random.normalvariate(0.5,1),
-    1)
-    for i in range(5)] + \
-            [(random.normalvariate(1.5, 1),
-            random.normalvariate(0.5, 1),
-            1.0)
-            for i in range(5)]
+cA,cB,d = generateData()
 
-classB = [(random.normalvariate(0.0, 0.5),
-    random.normalvariate(-0.5, 0.5),
-    -1.0)
-    for i in range(10)]
+plotFun(cA,cB)
 
-data = classA + classB
-random.shuffle(data)
 
-# Plot the data
-
-pylab.hold(True)
-pylab.plot([p[0] for p in classA],
-        [p[1] for p in classA],
-        'bo')
-pylab.plot([p[0] for p in classB],
-        [p[1] for p in classB],
-        'ro')
-pylab.show()
