@@ -1,4 +1,4 @@
-import numpy, random, math
+import numpy, math
 
 from cvxopt.solvers import qp
 from cvxopt.base import matrix
