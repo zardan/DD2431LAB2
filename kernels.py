@@ -1,4 +1,4 @@
-import numpy, math
+import math
 
 # a linear kernel functionn (2D)
 # takes two lists/arrays as vectors
@@ -17,3 +17,19 @@ def quad_ker(x,y):
 def cube_ker(x,y):
     res = quad_ker(x,y)
     return res*lin_ker(x,y)
+
+def rad_ker(x,y):
+    xmy2 = 0
+    for i in range(len(x)-1):
+        xmy2 += (x[i]-y[i])**2
+    sigma = 1
+    return math.exp(-xmy2/(2*sigma**2))
+
+def sig_ker(x,y):
+    k = 1e-2
+    d = 0
+    xdy = 0
+    for i in range(len(x)-1):
+        xdy += x[i]*y[i]
+    arg = k*xdy-d
+    return math.tanh(arg)

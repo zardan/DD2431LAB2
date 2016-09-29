@@ -1,4 +1,4 @@
-import numpy, math
+import numpy as np
 
 from cvxopt.solvers import qp
 from cvxopt.base import matrix
@@ -11,7 +11,7 @@ def Pmatrix(data, kernel):
     # Computes matrix P using data and the specified kernel function
 
     N = len(data)
-    P = numpy.zeros(shape=(N,N))
+    P = np.zeros(shape=(N,N))
     for i in range(N):
         for j in range(N):
             P[i][j] = data[i][2]*data[j][2]*kernel(data[i],data[j])
@@ -36,35 +36,37 @@ cA,cB,d = generateData()
 #kernel = input('Kernel:\n')
 kernel = quad_ker 
 #kernel = lin_ker
+kernel = rad_ker
+#kernel = sig_ker
 
 P = Pmatrix(d, kernel)
-q = -numpy.ones(len(d))
+q = -np.ones(len(d))
 c = 100
-G = -numpy.identity(len(d))
-G = numpy.append(G,-G,0)
-h = numpy.zeros(len(d))
-h = numpy.append(h,c*numpy.ones(len(d)),0)
+G = -np.identity(len(d))
+#G = np.append(G,-G,0)
+h = np.zeros(len(d))
+#h = np.append(h,c*np.ones(len(d)),0)
 
 res = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 alpha = list(res['x'])
 
 th = 1e-5
 # Set ~0 values to exactly 0 in alpha
-alpha = [x if x >= th else 0 for x in alpha]
+# alpha = [x if x >= th else 0 for x in alpha]
 
 #make list of non-zero alphas and data points
 nz_a_d = [x for x in zip(alpha,d) if x[0] >= th]
 
-print 'alpha = ',alpha
-print 'd = ',d
-print 'nz_a_d = ',nz_a_d
+#print 'alpha = ',alpha
+#print 'd = ',d
+#print 'nz_a_d = ',nz_a_d
 
 
 
 # plot decision boundary
-xRange = numpy.arange(-4,4,0.05)
+xRange = np.arange(-4,4,0.05)
 yRange = xRange
-grid = matrix([[ind([x,y],nz_a_d,kernel) for x in xRange] for y in yRange])
+grid = matrix([[ind([x,y],nz_a_d,kernel) for y in yRange] for x in xRange])
 
 contour(xRange,yRange,grid,cA,cB)
 
