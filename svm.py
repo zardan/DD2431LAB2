@@ -29,8 +29,6 @@ def ind(x,nz_a_d,kernel):
         #        alpha_i       t_i             K(x*,x)
     return res
 
-
-
 cA,cB,d = generateData()
 
 #kernel = input('Kernel:\n')
@@ -41,7 +39,7 @@ kernel = rad_ker
 
 P = Pmatrix(d, kernel)
 q = -np.ones(len(d))
-c = 100
+#c = 100
 G = -np.identity(len(d))
 #G = np.append(G,-G,0)
 h = np.zeros(len(d))
@@ -57,20 +55,10 @@ th = 1e-5
 #make list of non-zero alphas and data points
 nz_a_d = [x for x in zip(alpha,d) if x[0] >= th]
 
-#print 'alpha = ',alpha
-#print 'd = ',d
-#print 'nz_a_d = ',nz_a_d
-
-
-
 # plot decision boundary
 xRange = np.arange(-4,4,0.05)
 yRange = xRange
 grid = matrix([[ind([x,y],nz_a_d,kernel) for y in yRange] for x in xRange])
 
 contour(xRange,yRange,grid,cA,cB)
-
-
-
-
 
