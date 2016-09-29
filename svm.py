@@ -21,11 +21,12 @@ def ind(x,nz_a_d,kernel):
     # indicator function takes new point data point x and classify using 
     # list of previous data points in list nz_a_d
 
-    x.append(0) # makes x a 3-element list as is the other classifying data
+    x.append(0) # makes x a 3-element list as is the classifying data
 
     res = 0
     for i in range(len(nz_a_d)):
         res += nz_a_d[i][0]*nz_a_d[i][1][2]*kernel(x,nz_a_d[i][1])
+        #        alpha_i       t_i             K(x*,x)
     return res
 
 
@@ -34,10 +35,11 @@ cA,cB,d = generateData()
 
 #kernel = input('Kernel:\n')
 kernel = quad_ker 
+#kernel = lin_ker
 
 P = Pmatrix(d, kernel)
 q = -numpy.ones(len(d))
-c = 1
+c = 100
 G = -numpy.identity(len(d))
 G = numpy.append(G,-G,0)
 h = numpy.zeros(len(d))
@@ -52,6 +54,10 @@ alpha = [x if x >= th else 0 for x in alpha]
 
 #make list of non-zero alphas and data points
 nz_a_d = [x for x in zip(alpha,d) if x[0] >= th]
+
+print 'alpha = ',alpha
+print 'd = ',d
+print 'nz_a_d = ',nz_a_d
 
 
 
