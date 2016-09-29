@@ -4,10 +4,12 @@ from cvxopt.solvers import qp
 from cvxopt.base import matrix
 
 from data import generateData
-from plot import plotFun
+from plot import plotFun, contour
 from kernels import *
 
 def Pmatrix(data, kernel):
+    # Computes matrix P using data and the specified kernel function
+
     N = len(data)
     P = numpy.zeros(shape=(N,N))
     for i in range(N):
@@ -15,12 +17,25 @@ def Pmatrix(data, kernel):
             P[i][j] = data[i][2]*data[j][2]*kernel(data[i],data[j])
     return P
 
+def ind(x,nz_a_d,kernel):
+    # indicator function takes new point data point x and classify using 
+    # list of previous data points in list nz_a_d
+
+    x.append(0) # makes x a 3-element list as is the other classifying data
+
+    res = 0
+    for i in range(len(nz_a_d)):
+        res += nz_a_d[i][0]*nz_a_d[i][1][2]*kernel(x,nz_a_d[i][1])
+    return res
+
+
+
 cA,cB,d = generateData()
 
 #kernel = input('Kernel:\n')
-#P = Pmatrix(d, kernel)
+kernel = quad_ker 
 
-P = Pmatrix(d, lin_ker)
+P = Pmatrix(d, kernel)
 q = -numpy.ones(len(d))
 c = 1
 G = -numpy.identity(len(d))
@@ -36,10 +51,18 @@ th = 1e-5
 alpha = [x if x >= th else 0 for x in alpha]
 
 #make list of non-zero alphas and data points
-nz_a_l = [x for x in zip(alpha,d) if x[0] >= th]
+nz_a_d = [x for x in zip(alpha,d) if x[0] >= th]
 
-#array_np = numpy.asarray(alpha)
-#zeroind = array_np < 1e-5
-#array_np[zeroind] = 0
-#a = array_np
-#print 'a = ', a
+
+
+# plot decision boundary
+xRange = numpy.arange(-4,4,0.05)
+yRange = xRange
+grid = matrix([[ind([x,y],nz_a_d,kernel) for x in xRange] for y in yRange])
+
+contour(xRange,yRange,grid,cA,cB)
+
+
+
+
+
