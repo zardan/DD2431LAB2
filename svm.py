@@ -1,4 +1,5 @@
 import numpy as np
+import pylab
 
 from cvxopt.solvers import qp
 from cvxopt.base import matrix
@@ -18,7 +19,7 @@ def Pmatrix(data, kernel):
     return P
 
 def ind(x,nz_a_d,kernel):
-    # indicator function takes new point data point x and classify using 
+    # indicator function takes new point data point x and classify using
     # list of previous data points in list nz_a_d
 
     x.append(0) # makes x a 3-element list as is the classifying data
@@ -32,17 +33,18 @@ def ind(x,nz_a_d,kernel):
 cA,cB,d = generateData()
 
 #kernel = input('Kernel:\n')
-kernel = quad_ker 
+kernel = quad_ker
 #kernel = lin_ker
-kernel = rad_ker
+#kernel = rad_ker
 #kernel = sig_ker
 
 P = Pmatrix(d, kernel)
 q = -np.ones(len(d))
-#c = 100
 G = -np.identity(len(d))
-#G = np.append(G,-G,0)
 h = np.zeros(len(d))
+# when including slack variables:
+#c = 100
+#G = np.append(G,-G,0)
 #h = np.append(h,c*np.ones(len(d)),0)
 
 res = qp(matrix(P), matrix(q), matrix(G), matrix(h))
@@ -52,7 +54,7 @@ th = 1e-5
 # Set ~0 values to exactly 0 in alpha
 # alpha = [x if x >= th else 0 for x in alpha]
 
-#make list of non-zero alphas and data points
+# Make list of non-zero alphas and data points
 nz_a_d = [x for x in zip(alpha,d) if x[0] >= th]
 
 # plot decision boundary
@@ -61,4 +63,3 @@ yRange = xRange
 grid = matrix([[ind([x,y],nz_a_d,kernel) for y in yRange] for x in xRange])
 
 contour(xRange,yRange,grid,cA,cB)
-
