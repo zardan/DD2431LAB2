@@ -1,5 +1,5 @@
 import numpy as np
-import pylab
+import pylab, pickle
 
 from cvxopt.solvers import qp
 from cvxopt.base import matrix
@@ -30,11 +30,34 @@ def ind(x,nz_a_d,kernel):
         #        alpha_i       t_i             K(x*,x)
     return res
 
-cA,cB,d = generateData()
+def genAndSaveData():
+    cA,cB,d = generateData()
+    with open('cA.pkl', 'wb') as output:
+        pickle.dump(cA, output, pickle.HIGHEST_PROTOCOL)
+    del cA
+    with open('cB.pkl', 'wb') as output:
+        pickle.dump(cB, output, pickle.HIGHEST_PROTOCOL)
+    del cB
+    with open('data.pkl', 'wb') as output:
+        pickle.dump(d, output, pickle.HIGHEST_PROTOCOL)
+    del d
+
+def loadData():
+    with open('cA.pkl', 'rb') as input:
+        cA = pickle.load(input)
+    with open('cB.pkl', 'rb') as input:
+        cB = pickle.load(input)
+    with open('data.pkl', 'rb') as input:
+        d = pickle.load(input)
+    return cA, cB, d
+
+#genAndSaveData()
+cA, cB, d = loadData()
 
 #kernel = input('Kernel:\n')
-kernel = quad_ker
-#kernel = lin_ker
+kernel = lin_ker
+#kernel = quad_ker
+#kernel = cube_ker
 #kernel = rad_ker
 #kernel = sig_ker
 
@@ -43,9 +66,9 @@ q = -np.ones(len(d))
 G = -np.identity(len(d))
 h = np.zeros(len(d))
 # when including slack variables:
-#c = 100
-#G = np.append(G,-G,0)
-#h = np.append(h,c*np.ones(len(d)),0)
+c = 1
+G = np.append(G,-G,0)
+h = np.append(h,c*np.ones(len(d)),0)
 
 res = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 alpha = list(res['x'])
