@@ -26,10 +26,11 @@ def rad_ker(x,y):
     return math.exp(-xmy2/(2*sigma**2))
 
 def sig_ker(x,y):
-    k = 1e-2
-    d = 0
+    k = 0.15
+    d = -0.1
     xdy = 0
     for i in range(len(x)-1):
         xdy += x[i]*y[i]
     arg = k*xdy-d
+    #print math.tanh(arg)
     return math.tanh(arg)

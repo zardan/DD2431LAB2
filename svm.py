@@ -51,24 +51,24 @@ def loadData():
         d = pickle.load(input)
     return cA, cB, d
 
-#genAndSaveData()
+genAndSaveData()
 cA, cB, d = loadData()
 
 #kernel = input('Kernel:\n')
-kernel = lin_ker
+#kernel = lin_ker
 #kernel = quad_ker
 #kernel = cube_ker
 #kernel = rad_ker
-#kernel = sig_ker
+kernel = sig_ker
 
 P = Pmatrix(d, kernel)
 q = -np.ones(len(d))
 G = -np.identity(len(d))
 h = np.zeros(len(d))
 # when including slack variables:
-c = 1
-G = np.append(G,-G,0)
-h = np.append(h,c*np.ones(len(d)),0)
+#c = 1
+#G = np.append(G,-G,0)
+#h = np.append(h,c*np.ones(len(d)),0)
 
 res = qp(matrix(P), matrix(q), matrix(G), matrix(h))
 alpha = list(res['x'])
